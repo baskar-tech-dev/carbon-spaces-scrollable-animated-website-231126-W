@@ -210,17 +210,32 @@ export default function ServiceChapters({
   const onChapterInViewRef = useRef(onChapterInView);
   onChapterInViewRef.current = onChapterInView;
 
-  // Camera breathing transforms per scene
+  // Controlled camera transforms per scene (zero excessive zoom)
   const cameraTransforms = [
     "scale(1.00) translate(0%, 0%)",
-    "scale(1.03) translate(-1%, -0.5%)",
-    "scale(1.05) translate(1%, -1%)",
-    "scale(1.03) translate(0%, 0.8%)",
-    "scale(1.01) translate(0%, 0%)",
+    "scale(1.00) translate(0%, 0%)",
+    "scale(1.00) translate(0%, 0%)",
+    "scale(1.00) translate(0%, 0%)",
+    "scale(1.00) translate(0%, 0%)",
   ];
 
   const currentChapter = CHAPTERS_DATA[activeChapterIndex] || CHAPTERS_DATA[0];
   const currentScene = currentChapter.scenes[activeSceneIndex] || currentChapter.scenes[0];
+
+  // Helper to determine optimal focal Y per chapter to keep architectural elements in view
+  const getChapterFocalY = (chapterId?: string): number => {
+    switch (chapterId) {
+      case "elevation":
+        return 0.16; // Keeps building roofline, facade, and architectural height fully in frame
+      case "signboards":
+        return 0.32; // Keeps entrance canopy lettering and signboard monolith in frame
+      case "interiors":
+        return 0.40; // Balanced villa architecture & garden
+      case "acoustics":
+      default:
+        return 0.50; // Centered
+    }
+  };
 
   // Forward ref for renderFrameAt to avoid circular dependency in requestFrame
   const renderFrameAtRef = useRef<((chapIdx: number, chapProg: number) => void) | null>(null);
@@ -251,22 +266,41 @@ export default function ServiceChapters({
     return arr[f];
   }, []);
 
-  // Helper to draw an image centered with cover scaling (fast & lightweight)
+  // Helper to draw an image centered with balanced architectural scaling (zero over-zoom)
   const drawImageCover = useCallback(
     (
       context: CanvasRenderingContext2D,
       img: HTMLImageElement,
       targetWidth: number,
       targetHeight: number,
-      alpha = 1.0
+      alpha = 1.0,
+      chapterId?: string
     ) => {
       if (!img || !img.complete || !img.naturalWidth) return;
 
-      const scale = Math.max(targetWidth / img.naturalWidth, targetHeight / img.naturalHeight);
+      const imgAspect = img.naturalWidth / img.naturalHeight;
+      const screenAspect = targetWidth / targetHeight;
+
+      // Intelligent architectural aspect scaling:
+      // When screen is wider than 16:9 (common on laptops/desktops), pure cover
+      // blows up the height and crops the top & bottom of buildings/signs.
+      // We moderate the scale so subjects retain their full architectural stature:
+      let scale: number;
+      if (screenAspect > imgAspect) {
+        const heightScale = targetHeight / img.naturalHeight;
+        const widthScale = targetWidth / img.naturalWidth;
+        scale = Math.min(widthScale, heightScale * 1.20);
+      } else {
+        scale = Math.max(targetWidth / img.naturalWidth, targetHeight / img.naturalHeight);
+      }
+
       const drawWidth = img.naturalWidth * scale;
       const drawHeight = img.naturalHeight * scale;
       const x = (targetWidth - drawWidth) / 2;
-      const y = (targetHeight - drawHeight) / 2;
+
+      // Intelligent focal point per chapter so building tops and signboards are never cut off
+      const focalY = getChapterFocalY(chapterId);
+      const y = (targetHeight - drawHeight) * focalY;
 
       context.save();
       context.globalAlpha = Math.max(0, Math.min(1, alpha));
@@ -353,10 +387,10 @@ export default function ServiceChapters({
         const nextImg = getNearestLoadedFrame(nextChapter.id, 0);
 
         if (activeImg) {
-          drawImageCover(context, activeImg, targetWidth, targetHeight, 1.0 - factor);
+          drawImageCover(context, activeImg, targetWidth, targetHeight, 1.0 - factor, currentChapter.id);
         }
         if (nextImg) {
-          drawImageCover(context, nextImg, targetWidth, targetHeight, factor);
+          drawImageCover(context, nextImg, targetWidth, targetHeight, factor, nextChapter.id);
         }
       } else if (chapProg < 0.08 && prevChapter) {
         // Reverse crossfade into previous chapter's final frame
@@ -366,22 +400,22 @@ export default function ServiceChapters({
         const prevImg = getNearestLoadedFrame(prevChapter.id, prevLastFrame);
 
         if (activeImg) {
-          drawImageCover(context, activeImg, targetWidth, targetHeight, 1.0 - factor);
+          drawImageCover(context, activeImg, targetWidth, targetHeight, 1.0 - factor, currentChapter.id);
         }
         if (prevImg) {
-          drawImageCover(context, prevImg, targetWidth, targetHeight, factor);
+          drawImageCover(context, prevImg, targetWidth, targetHeight, factor, prevChapter.id);
         }
       } else if (chapIdx === CHAPTERS_DATA.length - 1 && chapProg > 0.90) {
         // Final chapter (Elevation) transition into Project Gallery:
         // Gracefully dissolve to architectural black (#111111) to seamlessly blend into Project Gallery
         const exitFactor = (chapProg - 0.90) / 0.10;
         if (activeImg) {
-          drawImageCover(context, activeImg, targetWidth, targetHeight, 1.0 - exitFactor * 0.75);
+          drawImageCover(context, activeImg, targetWidth, targetHeight, 1.0 - exitFactor * 0.75, currentChapter.id);
         }
       } else {
         // Normal single scene frame
         if (activeImg) {
-          drawImageCover(context, activeImg, targetWidth, targetHeight, 1.0);
+          drawImageCover(context, activeImg, targetWidth, targetHeight, 1.0, currentChapter.id);
         }
       }
     },

@@ -56,7 +56,7 @@ const PROJECTS: ProjectItem[] = [
     category: "Signboards",
     location: "Commercial Hub, Tamil Nadu",
     year: "2024",
-    image: "/signage/ezgif-frame-120.jpg",
+    image: "/signage/ezgif-frame-180.jpg",
     aspectClass: "project-wide",
     description:
       "Precision-machined 3D architectural lettering mounted on natural textured stone, illuminated by warm, indirect champagne-gold LED backlighting.",
@@ -73,7 +73,7 @@ const PROJECTS: ProjectItem[] = [
     category: "Elevation",
     location: "Coimbatore, Tamil Nadu",
     year: "2024",
-    image: "/elevation/ezgif-frame-120.jpg",
+    image: "/elevation/ezgif-frame-240.jpg",
     aspectClass: "project-large",
     description:
       "Transforming an ordinary commercial building exterior into an architectural landmark through contemporary ACP cladding and expansive glass facade systems.",
