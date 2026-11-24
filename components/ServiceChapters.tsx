@@ -305,6 +305,21 @@ export default function ServiceChapters({
       context.save();
       context.globalAlpha = Math.max(0, Math.min(1, alpha));
       context.drawImage(img, x, y, drawWidth, drawHeight);
+
+      // Seamlessly conceal the AI generator star watermark at (1160, 600)
+      // by cloning an adjacent clean texture patch (sampled at 1090, 575):
+      context.drawImage(
+        img,
+        1090,
+        575,
+        55,
+        55,
+        x + 1135 * scale,
+        y + 575 * scale,
+        55 * scale,
+        55 * scale
+      );
+
       context.restore();
     },
     []
