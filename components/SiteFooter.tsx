@@ -90,6 +90,17 @@ export default function SiteFooter() {
           <p className="colophon-copyright">
             &copy; {new Date().getFullYear()} CARBON SPACES. ALL RIGHTS RESERVED. WE DESIGN EXPERIENCE.
           </p>
+          <div className="colophon-credits">
+            <span>CRAFTED BY </span>
+            <a
+              href="https://futuremindstudio.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="colophon-agency-link"
+            >
+              FUTURE MIND STUDIO
+            </a>
+          </div>
           <div className="colophon-regional-notes">
             <span>COIMBATORE · CHENNAI · SALEM · TIRUPPUR · TAMIL NADU</span>
           </div>

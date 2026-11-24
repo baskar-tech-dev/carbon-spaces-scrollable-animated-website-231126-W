@@ -1987,6 +1987,28 @@ button {
   color: var(--text-muted);
 }
 
+.colophon-credits {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.colophon-agency-link {
+  color: var(--champagne-gold);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.colophon-agency-link:hover {
+  color: var(--text-dark);
+  text-decoration: underline;
+}
+
 .colophon-regional-notes {
   font-size: 8.5px;
   letter-spacing: 0.2em;
@@ -2368,6 +2390,11 @@ button {
   .footer-top-row {
     grid-template-columns: 1fr;
     gap: 36px;
+  }
+  .footer-colophon-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
 }
 

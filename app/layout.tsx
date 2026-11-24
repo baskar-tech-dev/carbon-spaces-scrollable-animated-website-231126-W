@@ -23,6 +23,8 @@ export const metadata: Metadata = {
     "Coimbatore Architects",
     "Luxury Architecture India",
   ],
+  authors: [{ name: "Future Mind Studio", url: "https://futuremindstudio.com" }],
+  creator: "Future Mind Studio",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
