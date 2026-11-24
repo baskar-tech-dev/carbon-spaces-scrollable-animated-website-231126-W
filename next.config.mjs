@@ -1,8 +1,9 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: 'export',
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  output: "export",
   images: {
-    unoptimized: true, // Required because Next Image Optimization server isn't available on static hosting
+    unoptimized: true,
   },
 };
 
