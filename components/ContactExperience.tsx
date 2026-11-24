@@ -313,7 +313,7 @@ export default function ContactExperience({
                       <input
                         id="client-location"
                         type="text"
-                        placeholder="e.g. Coimbatore, Chennai, Salem"
+                        placeholder="e.g. Coimbatore, Tamil Nadu"
                         value={location}
                         onChange={(e) => setLocation(e.target.value)}
                         className={errors.location ? "input-has-error" : ""}

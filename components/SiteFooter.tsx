@@ -102,7 +102,7 @@ export default function SiteFooter() {
             </a>
           </div>
           <div className="colophon-regional-notes">
-            <span>COIMBATORE · CHENNAI · SALEM · TIRUPPUR · TAMIL NADU</span>
+            <span>COIMBATORE, TAMIL NADU</span>
           </div>
         </div>
       </div>

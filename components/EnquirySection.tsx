@@ -286,7 +286,7 @@ export default function EnquirySection({ initialService = "Interior Solutions" }
                   <input
                     id="location"
                     type="text"
-                    placeholder="e.g. Coimbatore, Chennai, Tiruppur"
+                    placeholder="e.g. Coimbatore, Tamil Nadu"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     className={errors.location ? "input-error" : ""}

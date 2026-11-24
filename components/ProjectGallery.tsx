@@ -54,7 +54,7 @@ const PROJECTS: ProjectItem[] = [
     id: "monolith-signage",
     name: "The Carbon Commercial Monolith",
     category: "Signboards",
-    location: "Commercial Hub, Tamil Nadu",
+    location: "Coimbatore, Tamil Nadu",
     year: "2024",
     image: "/signage/ezgif-frame-180.jpg",
     aspectClass: "project-wide",
