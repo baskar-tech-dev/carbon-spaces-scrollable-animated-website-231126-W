@@ -254,7 +254,7 @@ button {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 10000;
   padding: 24px 6vw;
   background: transparent;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -408,17 +408,32 @@ button {
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 6px;
+  padding: 8px;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 5px;
+  width: 40px;
+  height: 40px;
+  z-index: 10001;
 }
 
+.mobile-menu-trigger .menu-line,
 .mobile-menu-trigger .menu-bar {
   display: block;
   width: 22px;
-  height: 1.5px;
+  height: 2px;
   background: var(--pure-white);
-  transition: transform 0.3s ease;
+  border-radius: 1px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+
+.mobile-menu-trigger.is-active .line-1 {
+  transform: translateY(3.5px) rotate(45deg);
+}
+
+.mobile-menu-trigger.is-active .line-2 {
+  transform: translateY(-3.5px) rotate(-45deg);
 }
 
 .mobile-nav-drawer {
@@ -2233,12 +2248,19 @@ button {
     max-width: 86vw;
   }
   .asymmetrical-gallery-grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
   }
+  .gallery-item-card,
   .gallery-item-card.project-large,
   .gallery-item-card.project-tall,
-  .gallery-item-card.project-wide {
-    grid-column: span 1;
+  .gallery-item-card.project-wide,
+  .gallery-item-card.project-large:last-child {
+    grid-column: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   .philosophy-manifesto-grid {
     grid-template-columns: 1fr;
@@ -2254,7 +2276,7 @@ button {
 /* Tablet Portrait & Large Mobile: 600px – 767px */
 @media (max-width: 767px) {
   .architectural-header {
-    padding: 16px 5vw;
+    padding: 14px 5vw;
   }
   .disciplines-nav {
     display: none;
@@ -2290,6 +2312,62 @@ button {
   .watermark-blur-shield {
     display: none;
   }
+  .project-gallery-section {
+    padding: 70px 5vw 60px;
+    scroll-margin-top: 70px;
+  }
+  .gallery-header-block {
+    margin-bottom: 28px;
+  }
+  .section-headline {
+    font-size: clamp(26px, 7vw, 38px);
+    line-height: 1.15;
+  }
+  .gallery-subtext {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-top: 14px;
+  }
+  .asymmetrical-gallery-grid {
+    gap: 24px;
+  }
+  .gallery-image-wrapper,
+  .project-tall .gallery-image-wrapper {
+    height: 240px;
+  }
+  .gallery-item-caption {
+    padding: 18px 20px;
+  }
+  .caption-title {
+    font-size: 18px;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .caption-meta {
+    margin-bottom: 6px;
+  }
+  .brand-philosophy-section,
+  .contact-experience-section {
+    scroll-margin-top: 70px;
+  }
+  /* Mobile modal */
+  .project-modal-backdrop {
+    padding: 16px 12px;
+    align-items: flex-end;
+  }
+  .project-modal-dialog {
+    max-height: 85vh;
+    border-radius: 12px 12px 0 0;
+  }
+  .modal-hero-image-wrap {
+    height: 220px;
+  }
+  .modal-body-content {
+    padding: 24px 18px;
+  }
+  .modal-specs-list {
+    grid-template-columns: 1fr;
+  }
   .philosophy-columns-block {
     grid-template-columns: 1fr;
   }
@@ -2309,9 +2387,20 @@ button {
 @media (max-width: 599px) {
   .mobile-action-strip {
     display: grid;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
   }
   body {
-    padding-bottom: 60px;
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  }
+  .layout-lower-left,
+  .layout-mid-left,
+  .layout-center-left,
+  .layout-lower-left-offset,
+  .layout-grand-reveal {
+    bottom: calc(11vh + 24px);
+    left: 5vw;
+    right: 5vw;
+    max-width: 90vw;
   }
   .editorial-headline-primary {
     font-size: clamp(28px, 8vw, 40px);
@@ -2324,16 +2413,23 @@ button {
     margin-top: 24px;
   }
   .project-gallery-section {
-    padding: 80px 5vw 70px;
+    padding: 60px 5vw 50px;
   }
-  .gallery-image-wrapper {
-    height: 280px;
+  .gallery-image-wrapper,
+  .project-tall .gallery-image-wrapper {
+    height: 220px;
+  }
+  .gallery-item-caption {
+    padding: 16px 16px;
+  }
+  .caption-cta {
+    font-size: 9px;
   }
   .brand-philosophy-section {
-    padding: 80px 5vw 70px;
+    padding: 60px 5vw 50px;
   }
   .contact-experience-section {
-    padding: 80px 5vw 70px;
+    padding: 60px 5vw 50px;
   }
   /* Prevent iOS zoom on input focus */
   .field-input,
